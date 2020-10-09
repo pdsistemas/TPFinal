@@ -6,7 +6,11 @@ from cliente import Cliente
 import datetime
 
 class RepositorioTrabajos(Repositorio):
+    '''Gestiona el almacenamiento de los clientes en la Base de Datos.'''
+
     def get_one(self, id_trabajo):
+        '''Recibe un id (número entero), y retorna un objeto Trabajo. Si no lo
+        encuentra, retorna None'''
         consulta = "SELECT id_cliente, fecha_ingreso, fecha_entrega_propuesta, \
           fecha_entrega_real, descripcion, retirado FROM trabajos WHERE id = ?"
         result = self.cursor.execute(consulta, [ id_trabajo ]).fetchone()
@@ -16,6 +20,7 @@ class RepositorioTrabajos(Repositorio):
             return self._obtener_trabajo_de_result(result, id_trabajo)
 
     def get_all(self):
+        '''Retorna una lista compuesta por todos los objetos Trabajo'''
         consulta = "SELECT id_cliente, fecha_ingreso, fecha_entrega_propuesta, \
           fecha_entrega_real, descripcion, retirado, id FROM trabajos"
         result = self.cursor.execute(consulta).fetchall()
@@ -25,7 +30,8 @@ class RepositorioTrabajos(Repositorio):
         return lista_trabajos
 
     def store(self, trabajo):
-        '''Guarda un trabajo nuevo en la base de datos.
+        '''Recibe un objeto Trabajo, representando un nuevo Trabajo, y lo guarda
+        en la base de datos.
         En caso de éxito, retorna el id del trabajo, generado por la base de
         datos. En caso de fracaso, retorna 0 (cero).'''
         # Abrimos un bloque try, por si falla algo al operar con la BD:
@@ -69,8 +75,9 @@ class RepositorioTrabajos(Repositorio):
             self.bd.rollback()
             # ... y retornamos cero
             return 0
+
     def update(self, trabajo):
-        '''Recibe un trabajo, y actualiza sus datos en la BD. No se puede
+        '''Recibe un objeto Trabajo, y actualiza sus datos en la BD. No se puede
         actualizar el id del trabajo ni cambiar el cliente. 
         Retorna True si tuvo éxito, False de lo contrario'''
         fi = trabajo.fecha_ingreso.strftime("%Y-%m-%d")
@@ -101,8 +108,8 @@ class RepositorioTrabajos(Repositorio):
             return False
 
     def delete(self, trabajo):
-        ''' Recibe un trabajo y lo elimina de la base de datos. Retorna True
-        si tuvo éxito; False de lo contrario'''
+        ''' Recibe un objeto Trabajo y lo elimina de la base de datos. Retorna
+        True si tuvo éxito; False de lo contrario'''
         consulta = "DELETE FROM trabajos WHERE id = ?"
         try:
             result =self.cursor.execute(consulta, [ trabajo.id_trabajo ])

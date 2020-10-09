@@ -4,11 +4,12 @@ from clienteParticular import ClienteParticular
 from clienteCorporativo import ClienteCorporativo
 
 class RepositorioClientes(Repositorio):
-    '''Consulta y escribe nuevos clientes en la base de datos'''
+    '''Gestiona el almacenamiento de los clientes en la Base de Datos.'''
 
     def get_one(self, id_cliente):
-        '''Retorna un cliente, tanto sea Particular como Corporativo. Si no lo
-        encuentra, retorna None.'''
+        '''Recibe un id de cliente (número entero). Retorna un objeto cliente,
+        tanto sea Particular como Corporativo. Si no lo encuentra, retorna
+        None.'''
         # Comprobamos si existe un cliente con ese id en cliente_corporativo:
         consulta2 = "SELECT EXISTS ( SELECT * FROM cliente_corporativo \
                     WHERE id_cliente = ?) as existe"
@@ -27,6 +28,8 @@ class RepositorioClientes(Repositorio):
         return None
 
     def get_one_corporativo(self, id_cliente):
+        '''Recibe un id de cliente (número entero). Retorna un cliente
+        Corporativo. Si no lo encuentra, retorna None.'''
         consulta = "SELECT  cc.nombre_empresa, cc.nombre_contacto, \
                             cc.telefono_contacto c.telefono, c.mail\
                     FROM cliente c \
@@ -44,6 +47,8 @@ class RepositorioClientes(Repositorio):
                                       id_cliente);
 
     def get_one_particular(self, id_cliente):
+        '''Recibe un id de cliente (número entero). Retorna un cliente
+        Particular. Si no lo encuentra, retorna None.'''
         consulta = "SELECT cp.nombre, cp.apellido, c.telefono, c.mail  \
                     FROM cliente c \
                     JOIN cliente_particular cp ON c.id = cp.id_cliente \
@@ -57,14 +62,15 @@ class RepositorioClientes(Repositorio):
         
     
     def get_all(self):
-        '''Retorna un listado de todos los clientes, tanto particulares como
-        corporativos'''
+        '''Retorna una lista, compuesta por objetos Cliente, tanto particulares
+        como corporativos'''
         return self.get_all_particulares() + self.get_all_corporativos()
     
     def get_all_particulares(self):
-        '''Retorna un listado de todos los clientes particulares'''
+        '''Retorna una lista, compuesta por todos los objetos
+        ClienteParticular'''
         lista_clientes = []
-        # Consultamos primero los clientes corporativos:
+        # Consultamos primero los clientes c orporativos:
         consulta = "SELECT c.id, cp.nombre, cp.apellido, c.telefono, c.mail \
                     FROM cliente_particular cp \
                     JOIN cliente c ON c.id = cp.id_cliente";
@@ -72,12 +78,13 @@ class RepositorioClientes(Repositorio):
         todos_los_clientes = self.cursor.fetchall()
         for id_cliente, nombre, apellido, telefono, mail in todos_los_clientes:
             lista_clientes.append(
-                ClienteParticular(id_cliente, nombre, apellido, telefono, mail)
+                ClienteParticular(nombre, apellido, telefono, mail, id_cliente)
                 )
         return lista_clientes
 
     def get_all_corporativos(self):
-        '''Retorna un listado de todos los clientes corporativos'''
+        '''Retorna una lista, compuesta por todos los objetos
+        ClienteCorporativo'''
         lista_clientes = []
         # Consultamos primero los clientes corporativos:
         consulta = "SELECT c.id, cc.nombre_empresa, cc.nombre_contacto, \
@@ -89,18 +96,19 @@ class RepositorioClientes(Repositorio):
         for id_cliente, empresa, contacto, telefono_contacto, \
                          telefono_empresa, mail_empresa in todos_los_clientes:
             lista_clientes.append(
-                CienteCorporativo(id_cliente,
-                                  empresa,
+                CienteCorporativo(empresa,
                                   contacto,
                                   telefono_contacto,
                                   telefono_empresa,
-                                  mail_empresa
+                                  mail_empresa,
+                                  id_cliente
                                   )
                 )
         return lista_clientes
 
     def store(self, cliente):
-        '''Guarda un cliente nuevo en la base de datos.
+        '''Recibe un objeto Cliente (particular o corporativo), representando un
+        cliente nuevo, y lo guarda en la base de datos.
         En caso de éxito, retorna el id del cliente generado por la base de
         datos. En caso de fracaso, retorna 0 (cero).'''
         # Abrimos un bloque try, por si falla algo al operar con la BD:
@@ -152,7 +160,7 @@ class RepositorioClientes(Repositorio):
             return 0
 
     def delete(self, cliente):
-        '''Elimina al cliente de la Base de Datos.
+        '''Recibe un objeto Cliente y lo elimina de la Base de Datos.
         Retorna True si tuvo éxito, False de lo contrario.'''
         if type(cliente).__name__ == "ClienteCorporativo":
             tabla = "cliente_corporativo"
@@ -179,9 +187,9 @@ class RepositorioClientes(Repositorio):
             return False
 
     def update(self, cliente):
-        ''' Recibe un objeto cliente y actualiza sus datos en la base de datos
+        '''Recibe un objeto cliente y actualiza sus datos en la base de datos
         (no se puede actualizar el id del cliente, pero sí el resto de sus
-        datos) '''
+        datos). Retorna True si tuvo éxito, False de lo contrario.'''
         try:
             consulta = "UPDATE cliente SET telefono = ?, mail = ? WHERE id = ?"
             result = self.cursor.execute(consulta, [cliente.telefono, 
