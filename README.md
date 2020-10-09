@@ -47,7 +47,7 @@ cliente (`True`) o si aún está en el taller (`False`).
 Se proveen dos **repositorios**: `RepositorioClientes` y `RepositorioTrabajos`, que
 son clases Python que se encargan de *persisitir* (es decir: almacenar de forma
 permanente) y gestionar estos datos en una base de datos sqlite. Dicha base de
-datos está en el archivo base_de_datos.sqlite.
+datos está en el archivo base_datos.sqlite.
 
 Para que funcione sqlite en sistemas **GNU/Linux**, debemos instalar el gestor de
 bases de datos con el comando `sudo apt install sqlite3` (Debian, Ubuntu, Mint,
