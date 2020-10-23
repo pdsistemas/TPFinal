@@ -160,13 +160,17 @@ class Menu:
         for I in lista:
             if I.id_cliente == idc:
                 print("========================================")
-                print(I)
                 cliente = I
                 cne = 1
         if cne < 1:
             print("Cliente no encontrado")
+        print(cliente)
         fecha_ingreso = datetime.today()
-        fecha_entrega_propuesta = input("Ingrese la fecha de entrega propuesta (aaaa/mm/dd): ")
+        print("Ingrese la fecha de entrega propuesta: ")
+        dia = int(input("Día (1-31"))
+        mes = int(input("Mes (1-12"))
+        anio = int(input("Año"))
+        fecha_entrega_propuesta = date(anio, mes, dia)
         descripcion =  input("Ingrese una descripción del trabajo: ")
         t = self.lista_t.nuevo_trabajo(cliente, fecha_ingreso, fecha_entrega_propuesta, descripcion)
         if t == None:
