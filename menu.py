@@ -8,7 +8,6 @@ from Listaclientes import ListaClientes
 from Listatrabajo import TrabajosLista
 from trabajo import Trabajo
 
-
 class Menu:
     "Muestra ocpiones"
     def __init__(self):
@@ -152,7 +151,20 @@ class Menu:
                 print("El cliente solicitado no existe")
 
     def cargar_nuevo_trabajo(self):
-        cliente = input("Ingrese el nombre del cliente: ")
+        lista = self.lista_c.lista_Clientes
+        for cliente in lista:
+            print(cliente)
+            print("========================================")
+        idc = int(input("Ingrese el id del cliente: "))
+        cne = 0
+        for I in lista:
+            if I.id_cliente == idc:
+                print("========================================")
+                print(I)
+                cliente = I
+                cne = 1
+        if cne < 1:
+            print("Cliente no encontrado")
         fecha_ingreso = datetime.today()
         fecha_entrega_propuesta = input("Ingrese la fecha de entrega propuesta (aaaa/mm/dd): ")
         descripcion =  input("Ingrese una descripción del trabajo: ")

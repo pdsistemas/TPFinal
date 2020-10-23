@@ -5,6 +5,7 @@ from clienteParticular import ClienteParticular
 from clienteCorporativo import ClienteCorporativo
 from repositorioClientes import RepositorioClientes
 
+
 class ListaClientes:
     def __init__(self):
         self.rc = RepositorioClientes()
