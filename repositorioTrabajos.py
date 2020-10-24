@@ -1,9 +1,10 @@
-#! /usr/bin/python3
+# ! /usr/bin/python3
 from repositorio import Repositorio
 from repositorioClientes import RepositorioClientes
 from trabajo import Trabajo
 from cliente import Cliente
 import datetime
+
 
 class RepositorioTrabajos(Repositorio):
     '''Gestiona el almacenamiento de los clientes en la Base de Datos.'''
@@ -40,7 +41,7 @@ class RepositorioTrabajos(Repositorio):
             fecha_entrega_propuesta,fecha_entrega_real, descripcion, retirado) \
             VALUES (?,?,?,?,?,?)"
             parametros = [ trabajo.cliente.id_cliente ]
-            
+
             parametros.append(trabajo.fecha_ingreso.strftime("%Y-%m-%d"))
 
             if trabajo.fecha_entrega_propuesta == None:
@@ -78,7 +79,7 @@ class RepositorioTrabajos(Repositorio):
 
     def update(self, trabajo):
         '''Recibe un objeto Trabajo, y actualiza sus datos en la BD. No se puede
-        actualizar el id del trabajo ni cambiar el cliente. 
+        actualizar el id del trabajo ni cambiar el cliente.
         Retorna True si tuvo éxito, False de lo contrario'''
         fi = trabajo.fecha_ingreso.strftime("%Y-%m-%d")
         if trabajo.fecha_entrega_propuesta == None:
@@ -94,8 +95,8 @@ class RepositorioTrabajos(Repositorio):
                 fecha_entrega_propuesta = ?, fecha_entrega_real = ?, \
                 descripcion = ?, retirado = ? WHERE id = ?"
         try:
-            result = self.cursor.execute(consulta, [ fi, fep, fer, 
-                                                 trabajo.descripcion, r, 
+            result = self.cursor.execute(consulta, [ fi, fep, fer,
+                                                 trabajo.descripcion, r,
                                                  trabajo.id_trabajo ])
             if result.rowcount > 0:
                 self.bd.commit()
@@ -121,7 +122,7 @@ class RepositorioTrabajos(Repositorio):
                 return False
         except:
             self.bd.rollback()
-            return False 
+            return False
 
     def _obtener_trabajo_de_result(self, result, id_trabajo = None):
         '''Retorna un objeto Trabajo a partir del resultado de un SELECT'''
@@ -139,18 +140,18 @@ class RepositorioTrabajos(Repositorio):
             fecha_entrega_propuesta = None
         else:
             fecha_entrega_propuesta = datetime.date.fromisoformat(result[2])
-    
+
         if result[3] == None:
             fecha_entrega_real = None
         else:
-            fecha_entrega_real = datetime.date.fromisoformat(result[2])
+            fecha_entrega_real = datetime.date.fromisoformat(result[3])
 
         # Guardamos la descripcion:
         descripcion = result[4]
 
         # Guardamos el valor booleano retirado: 0->False, 1->True
         retirado = result[5] == 1
-        
+
         if id_trabajo == None:
             id_trabajo = result[6]
 
