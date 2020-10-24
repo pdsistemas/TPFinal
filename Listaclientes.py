@@ -31,7 +31,7 @@ class ListaClientes:
             return c
 
     def buscar_por_id(self, id_cliente):
-        """Buscar el trabajo con el ID dado"""
+        """Buscar el cliente con el ID dado"""
         for T in self.lista_Clientes:
             if T.id_cliente == int(id_cliente):
                 return (T)
