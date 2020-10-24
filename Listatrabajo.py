@@ -5,7 +5,6 @@ from trabajo import Trabajo
 import datetime
 from datetime import date
 
-
 class TrabajosLista:
 
 
@@ -23,13 +22,6 @@ class TrabajosLista:
             alertas.append(f)
 
         return alertas
-
-
-
-
-
-
-
 
     def nuevo_trabajo(self, cliente, fecha_ingreso, fecha_entrega_propuesta, descripcion):
         """Crea un nuev trabajo y lo agrega a la lista y a la base de datos"""

@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-from cliente import Cliente
+
 from clienteParticular import ClienteParticular
 from clienteCorporativo import ClienteCorporativo
 from repositorioClientes import RepositorioClientes

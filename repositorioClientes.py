@@ -31,7 +31,7 @@ class RepositorioClientes(Repositorio):
         '''Recibe un id de cliente (número entero). Retorna un cliente
         Corporativo. Si no lo encuentra, retorna None.'''
         consulta = "SELECT  cc.nombre_empresa, cc.nombre_contacto, \
-                            cc.telefono_contacto c.telefono, c.mail\
+                            cc.telefono_contacto, c.telefono, c.mail\
                     FROM cliente c \
                     JOIN cliente_corporativo cc ON c.id = cc.id_cliente \
                     WHERE c.id = ?"
@@ -96,7 +96,7 @@ class RepositorioClientes(Repositorio):
         for id_cliente, empresa, contacto, telefono_contacto, \
                          telefono_empresa, mail_empresa in todos_los_clientes:
             lista_clientes.append(
-                CienteCorporativo(empresa,
+                ClienteCorporativo(empresa,
                                   contacto,
                                   telefono_contacto,
                                   telefono_empresa,
@@ -123,7 +123,7 @@ class RepositorioClientes(Repositorio):
             if type(cliente).__name__ == "ClienteCorporativo":
                 tabla = "cliente_corporativo"
                 campos = ["id_cliente", "nombre_empresa", "telefono_contacto", \
-                        "id_contacto"]                
+                        "nombre_contacto"]
 
                 # consulta2 = "INSERT INTO cliente_corporativo (id_cliente,\
                 #              nombre_empresa, telefono_contacto, id_contacto) \
