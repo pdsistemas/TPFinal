@@ -18,7 +18,7 @@ class Menu:
                  "2": self.nuevo_clientes,
                  "3": self.buscar_cliente,
                  "4": self.borrar_cliente,
-                 "5": self.modificar_datos_particulares,
+                 "5": self.modificar_datos_clientes,
                  "6": self.cargar_nuevo_trabajo,
                  "7": self.mostrar_trabajos,
                  "8": self.establecer_entrega,
@@ -37,7 +37,7 @@ class Menu:
         2. Ingrese un nuevo cliente
         3. Buscar un cliente por su ID
         4. Borrar un cliente
-        5. Modificar clientes particulares
+        5. Modificar datos de un cliente
         6. Cargar nuevo trabajo
         7. Mostrar todos los trabajos
         8. Establecer entrega
@@ -142,26 +142,107 @@ class Menu:
             print("ID de cliente no encontrado")
         else:
             con = 0
-            for i in self.lista_t.lista_trabajos:
-                if i.cliente.id_cliente == id_cliente:
-                    if con == 0:
-                        print("\nEl cliente aún cuenta con los siguientes trabajos pendientes, no se puede eliminar el cliente.\n")
-                    print("========================================")
-                    print(i)
-                    con = 1
-                else:
-                    print(c)
-                    seg = input("\nEsta seguro que quiere eliminar el cliente? (S/N): ")
-                    if seg == 'S' or seg == 's':
-                        self.lista_c.eliminar_cliente(id_cliente)
-                        c = self.lista_c.eliminar_cliente(id_cliente)
-                        self.lista_c = ListaClientes()
-                        if c == None:
-                            print("Error al borrar el cliente")
-                        else:
-                            print("Cliente borrado con éxito")
+            if self.lista_t.lista_trabajos:
+                for i in self.lista_t.lista_trabajos:
+                    if i.cliente.id_cliente == id_cliente:
+                        if con == 0:
+                            print("\nEl cliente aún cuenta con los siguientes trabajos pendientes, no se puede eliminar el cliente.\n")
+                        print("========================================")
+                        print(i)
+                        con = 1
+            if con == 0:
+                print(c)
+                seg = input("\nEsta seguro que quiere eliminar el cliente? (S/N): ")
+                if seg == 'S' or seg == 's':
+                    self.lista_c.eliminar_cliente(id_cliente)
+                    c = self.lista_c.eliminar_cliente(id_cliente)
+                    self.lista_c = ListaClientes()
+                    if c == None:
+                        print("Error al borrar el cliente")
                     else:
-                        print("Operación cancelada por el usuario")
+                        print("Cliente borrado con éxito")
+                else:
+                    print("Operación cancelada por el usuario")
+
+
+    def modificar_datos_clientes(self):
+        lista = self.lista_c.lista_Clientes
+        id_cliente = int(input("Ingrese el ID del cliente: "))
+        c = self.lista_c.buscar_por_id(id_cliente)
+        if c == None:
+            print("\nCliente no encontrado")
+        else:
+            result = self.lista_c.modificar_clientes(id_cliente)
+            if result == 1:
+                print("El cliente es corporativo: ")
+                print(c)
+                print("\nPara no modificar algún dato particular, dejar el campo vacío\n")
+                nombre_empresa = input("Ingrese el nombre de empresa: ")
+                if nombre_empresa == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            nombre_empresa = I.nombre_empresa
+
+                nombre_contacto = input("Ingrese el nombre del contacto: ")
+                if nombre_contacto == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            nombre_contacto = I.nombre_contacto
+
+                telefono_contacto = input("Ingrese el teléfono del contacto: ")
+                if telefono_contacto == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            telefono_contacto = I.telefono_contacto
+
+                telefono = input("Ingrese el teléfono: ")
+                if telefono == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            telefono = I.telefono
+
+                mail = input("Ingrese el mail: ")
+                if mail == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            mail = I.mail
+                c = self.lista_c.Modificar_datos_corporativos(nombre_empresa, nombre_contacto, telefono_contacto, telefono, mail, id_cliente)
+                if c == None:
+                    print("Error al modificar el cliente")
+                else:
+                    print("\nCliente modificado con éxito")
+            if result == 0:
+                print("El cliente es particular:")
+                print(c)
+                print("\nPara no modificar algún dato particular, dejar el campo vacío\n")
+                nombre = input("Ingrese el nombre: ")
+                if nombre == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            nombre = I.nombre
+                apellido = input("Ingrese el apellido: ")
+                if apellido == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            apellido = I.apellido
+                telefono = input("Ingrese el telefono: ")
+                if telefono == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            telefono = I.telefono
+                mail = input("Ingrese el mail: ")
+                if mail == '':
+                    for I in lista:
+                        if I.id_cliente == id_cliente:
+                            mail = I.mail
+                c = self.lista_c.Modificar_datos_particulares(nombre, apellido, telefono, mail, id_cliente)
+                if c == None:
+                    print("Error al modificar el cliente")
+                else:
+                    print("\nCliente modificado con éxito")
+
+
+
 
     def modificar_datos_particulares(self):
         lista = self.lista_c.lista_Clientes
@@ -202,8 +283,6 @@ class Menu:
                         print("Error al modificar el cliente")
                     else:
                         print("Cliente modificado con éxito")
-                else:
-                    print("El cliente solicitado no existe")
 
     def cargar_nuevo_trabajo(self):
         lista = self.lista_c.lista_Clientes
@@ -223,6 +302,7 @@ class Menu:
             else:
                 print(cliente)
                 fecha_ingreso = datetime.today()
+                fecha_ingreso = date(fecha_ingreso.year, fecha_ingreso.month, fecha_ingreso.day)
                 print("Ingrese la fecha de entrega propuesta: ")
                 dia = int(input("Día (1-31): "))
                 mes = int(input("Mes (1-12): "))
@@ -254,7 +334,7 @@ class Menu:
                 if et == None:
                     print("Error al establecer entrega")
                 else:
-                    self.lista_t = TrabajosLista()
+                    t = self.lista_t.buscar_por_id(id_trabajo)
                     print ("El estado ahora es: ", t.retirado)
             else:
                 print("Operación cancelada por el usuario")

@@ -9,7 +9,7 @@ class ClienteParticular(Cliente):
         super().__init__(telefono, mail, id_cliente)
 
     def __str__(self):
-        cadena = f"{self.id_cliente}: {self.nombre} {self.apellido}\nTipo: Cliente Particular\n"
+        cadena = f"ID: {self.id_cliente}\nNombre: {self.nombre}\nApellido: {self.apellido}\nTipo: Cliente Particular\n"
         cadena+= f"Tel: {self.telefono}\n"
         cadena+= f"Mail: {self.mail}"
         return cadena

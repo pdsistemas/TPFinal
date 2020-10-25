@@ -12,6 +12,20 @@ class ListaClientes:
         self.lista_Clientes = self.rc.get_all()
 
 
+    def modificar_clientes(self, id_cliente):
+        #Recibe un ID y devuelve un 1 si es un cliente corporativo y 0 si es cliente particular.
+        lc = self.rc.get_all_corporativos()
+        lp = self.rc.get_all_particulares()
+        for l in lc:
+            if l.id_cliente == id_cliente:
+                return (1)
+        for l in lp:
+            if l.id_cliente == id_cliente:
+                return (0)
+
+
+
+
     def nuevo_cliente_corporativo(self, nombre_empresa, nombre_contacto, telefono_contacto, telefono, mail):
         c = ClienteCorporativo(nombre_empresa, nombre_contacto, telefono_contacto, telefono, mail)
         c.id_cliente = self.rc.store(c)
@@ -52,14 +66,15 @@ class ListaClientes:
             c.telefono = telefono
             c.mail = mail
             return self.rc.update(c)
-        return None
 
-    def Modificar_datos_corporativos(self, id_trabajo, descripcion, fecha_ingreso, fecha_entrega_propuesta):
-        """Modificar o corregir los datos del trabajo"""
-        Trabajos = self.buscar_por_id(id_trabajo)
-        if Trabajos:
-            Trabajos.descripcion = descripcion
-            Trabajos.fecha_ingreso = fecha_ingreso.datetime.date.today()
-            Trabajos.fehca_entrega_propuesta = fecha_entrega_propuesta.datetime.date.today()
-            return self.Repositorio_trabajos.update(Trabajos)
-        return False
+    def Modificar_datos_corporativos(self, nombre_empresa, nombre_contacto, telefono_contacto, telefono , mail, id_cliente):
+        """Modificar o corregir los datos del cliente particular"""
+        c = self.buscar_por_id(id_cliente)
+        if c:
+            c.nombre_empresa = nombre_empresa
+            c.nombre_contacto = nombre_contacto
+            c.telefono_contacto = telefono_contacto
+            c.telefono = telefono
+            c.mail = mail
+            return self.rc.update(c)
+        return None
