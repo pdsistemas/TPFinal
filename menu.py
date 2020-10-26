@@ -92,6 +92,7 @@ class Menu:
 
 
     def proximos_trabajos(self):
+        global dias
         ptrab = []
         listat = self.lista_t.lista_trabajos
         while True:
