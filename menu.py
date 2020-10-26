@@ -27,26 +27,30 @@ class Menu:
                  "11": self.modificar_datos_trabajos,
                  "12": self.eliminar_trabajo,
                  "13": self.proximos_trabajos,
+                 "14": self.buscar_trabajos_por_cliente,
                  "0": self.salir
         }
 
     def mostrar_menu(self):
         print("""
-        Menú del sistema: 
-        1. Mostrar todos los clientes
-        2. Ingrese un nuevo cliente
-        3. Buscar un cliente por su ID
-        4. Borrar un cliente
-        5. Modificar datos de un cliente
-        6. Cargar nuevo trabajo
-        7. Mostrar todos los trabajos
-        8. Establecer entrega
-        9. Establecer finalizacion de trabajo
-        10. Buscar un trabajo por ID
-        11. Modificar datos de trabajo
-        12. Eliminar trabajo
-        13. Motrar proximos trabajos a entregarse
-        0. Salir
+        Menú del sistema:
+                        
+                                SISTEMA DE GESTIÓN DE TRABAJOS
+        
+                MENÚ CLIENTES                                           MENÚ TRABAJOS 
+                                         
+        1. Mostrar todos los clientes                            6. Cargar nuevo trabajo
+        2. Ingrese un nuevo cliente                              7. Mostrar todos los trabajos
+        3. Buscar un cliente por su ID                           8. Establecer entrega
+        4. Borrar un cliente                                     9. Establecer finalizacion de trabajo
+        5. Modificar datos de un cliente                         10. Buscar un trabajo por ID
+                                                                 11. Modificar datos de trabajo
+                                                                 12. Eliminar trabajo
+                                                                 13. Motrar proximos trabajos a entregarse
+                                                                 14. Buscar trabajos de un cliente
+                
+        
+                                |Ingrese '0' para salir del sistema
         """)
 
 
@@ -62,6 +66,20 @@ class Menu:
                 accion()
             else:
                 print("{0} no es una opcion válida")
+
+    def buscar_trabajos_por_cliente(self):
+        id_cliente = int(input("Ingrese el ID del cliente: "))
+        c = self.lista_c.buscar_por_id(id_cliente)
+        if c:
+            for i in self.lista_t.lista_trabajos:
+                if i.cliente.id_cliente == id_cliente:
+                    print("========================================")
+                    print(i)
+        else:
+            print("Cliente no encontrado")
+        print("========================================")
+        input("\nPresione cualquier tecla para volver al menú")
+
 
     def proximos_trabajos(self):
         ptrab = []
@@ -80,6 +98,8 @@ class Menu:
         else:
             print("\nNo hay trabajos a entregar en los próximos", dias, "días")
 
+        input("\nPresione cualquier tecla para volver al menú")
+
 
 
 
@@ -91,6 +111,7 @@ class Menu:
                 print("========================================")
         else:
             print("No hay clientes cargados")
+        input("\nPresione cualquier tecla para volver al menú")
 
     def mostrar_trabajos(self):
         if self.lista_t.lista_trabajos:
@@ -99,6 +120,7 @@ class Menu:
                 print("========================================")
         else:
             print("No hay trabajos cargados")
+        input("\nPresione cualquier tecla para volver al menú")
 
     def nuevo_clientes(self):
         tipo = "N"
@@ -123,7 +145,10 @@ class Menu:
             print("========================================")
             print(c)
             print("========================================")
-            print("Carga exitosa")
+            print("             Carga exitosa              ")
+            print("========================================")
+        input("\nPresione cualquier tecla para volver al menú")
+
 
     def buscar_cliente(self):
         idc = int(input("ingrese el ID del cliente a buscar: "))
@@ -131,7 +156,10 @@ class Menu:
         if c == None:
             print("ID de cliente no encontrado")
         else:
+            print("========================================")
             print(c)
+            print("========================================")
+        input("\nPresione cualquier tecla para volver al menú")
 
 
 
@@ -151,7 +179,9 @@ class Menu:
                         print(i)
                         con = 1
             if con == 0:
+                print("========================================")
                 print(c)
+                print("========================================")
                 seg = input("\nEsta seguro que quiere eliminar el cliente? (S/N): ")
                 if seg == 'S' or seg == 's':
                     self.lista_c.eliminar_cliente(id_cliente)
@@ -162,7 +192,8 @@ class Menu:
                     else:
                         print("Cliente borrado con éxito")
                 else:
-                    print("Operación cancelada por el usuario")
+                    print("\nOperación cancelada por el usuario")
+        input("\nPresione cualquier tecla para volver al menú")
 
 
     def modificar_datos_clientes(self):
@@ -176,7 +207,8 @@ class Menu:
             if result == 1:
                 print("El cliente es corporativo: ")
                 print(c)
-                print("\nPara no modificar algún dato particular, dejar el campo vacío\n")
+                print("========================================")
+                print("\nPara NO modificar algún dato en particular, dejar el campo vacío\n")
                 nombre_empresa = input("Ingrese el nombre de empresa: ")
                 if nombre_empresa == '':
                     for I in lista:
@@ -214,7 +246,8 @@ class Menu:
             if result == 0:
                 print("El cliente es particular:")
                 print(c)
-                print("\nPara no modificar algún dato particular, dejar el campo vacío\n")
+                print("========================================")
+                print("\nPara NO modificar algún dato particular, dejar el campo vacío\n")
                 nombre = input("Ingrese el nombre: ")
                 if nombre == '':
                     for I in lista:
@@ -240,7 +273,51 @@ class Menu:
                     print("Error al modificar el cliente")
                 else:
                     print("\nCliente modificado con éxito")
+        input("\nPresione cualquier tecla para volver al menú")
 
+
+
+
+    def modificar_datos_particulares(self):
+        lista = self.lista_c.lista_Clientes
+        id_cliente = int(input("ingrese el ID del cliente a modificar: "))
+        c = self.lista_c.buscar_por_id(id_cliente)
+        if c == None:
+            print("ID cliente no encontrado")
+        else:
+            for I in lista:
+                if I.id_cliente == id_cliente:
+                    print("Los datos actuales del cliente son: ")
+                    print("========================================")
+                    print(I)
+                    print("========================================")
+                    print("Para no modificar algún dato particular, dejar el campo vacío")
+                    nombre = input("Ingrese el nombre: ")
+                    if nombre == '':
+                        for I in lista:
+                            if I.id_cliente == id_cliente:
+                                nombre = I.nombre
+                    apellido = input("Ingrese el apellido: ")
+                    if apellido == '':
+                        for I in lista:
+                            if I.id_cliente == id_cliente:
+                                apellido = I.apellido
+                    telefono = input("Ingrese el telefono: ")
+                    if telefono == '':
+                        for I in lista:
+                            if I.id_cliente == id_cliente:
+                                telefono = I.telefono
+                    mail = input("Ingrese el mail: ")
+                    if mail == '':
+                        for I in lista:
+                            if I.id_cliente == id_cliente:
+                                mail = I.mail
+                    c = self.lista_c.Modificar_datos_particulares(nombre, apellido, telefono, mail, id_cliente)
+                    if c == None:
+                        print("Error al modificar el cliente")
+                    else:
+                        print("Cliente modificado con éxito")
+        input("\nPresione cualquier tecla para volver al menú")
 
     def cargar_nuevo_trabajo(self):
         lista = self.lista_c.lista_Clientes
@@ -276,6 +353,7 @@ class Menu:
                     print(t)
         else:
             print("No hay clientes dados de alta, primero de el alta del cliente")
+        input("\nPresione cualquier tecla para volver al menú")
 
 
     def establecer_entrega(self):
@@ -296,6 +374,7 @@ class Menu:
                     print ("El estado ahora es: ", t.retirado)
             else:
                 print("Operación cancelada por el usuario")
+        input("\nPresione cualquier tecla para volver al menú")
 
 
 
@@ -315,6 +394,7 @@ class Menu:
             else:
                 print("Operación cancelada por el usuario")
         self.lista_t = TrabajosLista()
+        input("\nPresione cualquier tecla para volver al menú")
 
     def buscar_trabajo(self):
         id_trabajo = int(input("Ingrese el ID del trabajo: "))
@@ -323,6 +403,7 @@ class Menu:
             print("ID no encontrado")
         else:
             print(trabajo)
+        input("\nPresione cualquier tecla para volver al menú")
 
     def modificar_datos_trabajos(self):
         id_trabajo = int(input("ingrese el ID del trabajo a modificar: "))
@@ -382,6 +463,7 @@ class Menu:
                 print("Trabajo modificado con éxito")
                 print("============================")
         self.lista_t = TrabajosLista()
+        input("\nPresione cualquier tecla para volver al menú")
 
     def eliminar_trabajo(self):
         id_trabajo = int(input("Ingrese el ID del trabajo que desea eliminar: "))
@@ -400,6 +482,7 @@ class Menu:
             else:
                 print("Operación cancelada por el usuario")
             self.lista_t = TrabajosLista()
+            input("\nPresione cualquier tecla para volver al menú")
 
 
 
