@@ -311,55 +311,6 @@ class Menu:
         input("\nPresione cualquier tecla para volver al menú")
 
 
-
-
-    def modificar_datos_particulares(self):
-        lista = self.lista_c.lista_Clientes
-        while True:
-            try:
-                id_cliente = int(input("ingrese el ID del cliente a modificar: "))
-            except ValueError:
-                print('Ingresó un dato inválido')
-                continue
-            break
-        c = self.lista_c.buscar_por_id(id_cliente)
-        if c == None:
-            print("ID cliente no encontrado")
-        else:
-            for I in lista:
-                if I.id_cliente == id_cliente:
-                    print("Los datos actuales del cliente son: ")
-                    print("========================================")
-                    print(I)
-                    print("========================================")
-                    print("Para no modificar algún dato particular, dejar el campo vacío")
-                    nombre = input("Ingrese el nombre: ")
-                    if nombre == '':
-                        for I in lista:
-                            if I.id_cliente == id_cliente:
-                                nombre = I.nombre
-                    apellido = input("Ingrese el apellido: ")
-                    if apellido == '':
-                        for I in lista:
-                            if I.id_cliente == id_cliente:
-                                apellido = I.apellido
-                    telefono = input("Ingrese el telefono: ")
-                    if telefono == '':
-                        for I in lista:
-                            if I.id_cliente == id_cliente:
-                                telefono = I.telefono
-                    mail = input("Ingrese el mail: ")
-                    if mail == '':
-                        for I in lista:
-                            if I.id_cliente == id_cliente:
-                                mail = I.mail
-                    c = self.lista_c.Modificar_datos_particulares(nombre, apellido, telefono, mail, id_cliente)
-                    if c == None:
-                        print("Error al modificar el cliente")
-                    else:
-                        print("Cliente modificado con éxito")
-        input("\nPresione cualquier tecla para volver al menú")
-
     def cargar_nuevo_trabajo(self):
         lista = self.lista_c.lista_Clientes
         if lista:
@@ -633,13 +584,6 @@ class Menu:
                 print("Operación cancelada por el usuario")
             self.lista_t = TrabajosLista()
             input("\nPresione cualquier tecla para volver al menú")
-
-
-
-
-
-
-
 
 
 
