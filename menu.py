@@ -50,7 +50,7 @@ class Menu:
                                                                  14. Buscar trabajos de un cliente
                 
         
-                                |Ingrese '0' para salir del sistema
+                                Ingrese '0' para salir del sistema
         """)
 
 
@@ -68,13 +68,23 @@ class Menu:
                 print("{0} no es una opcion válida")
 
     def buscar_trabajos_por_cliente(self):
-        id_cliente = int(input("Ingrese el ID del cliente: "))
+        while True:
+            try:
+                id_cliente = int(input("Ingrese el ID del cliente: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
+        con = 0
         c = self.lista_c.buscar_por_id(id_cliente)
         if c:
             for i in self.lista_t.lista_trabajos:
                 if i.cliente.id_cliente == id_cliente:
-                    print("========================================")
-                    print(i)
+                        print("========================================")
+                        print(i)
+                        con = 1
+            if con == 0:
+                print("\nEl cliente no cuenta \ncon trabajos asignados.")
         else:
             print("Cliente no encontrado")
         print("========================================")
@@ -84,7 +94,13 @@ class Menu:
     def proximos_trabajos(self):
         ptrab = []
         listat = self.lista_t.lista_trabajos
-        dias = int(input("Ingrese la cantidad de días para establecer\nuna lista de proximos trabajos a entregar: "))
+        while True:
+            try:
+                dias = int(input("Ingrese la cantidad de días para establecer\nuna lista de proximos trabajos a entregar: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         alertas = self.lista_t.alerta_trabajos(dias)
         for i in listat:
             for a in alertas:
@@ -151,7 +167,13 @@ class Menu:
 
 
     def buscar_cliente(self):
-        idc = int(input("ingrese el ID del cliente a buscar: "))
+        while True:
+            try:
+                idc = int(input("ingrese el ID del cliente a buscar: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         c = self.lista_c.buscar_por_id(idc)
         if c == None:
             print("ID de cliente no encontrado")
@@ -164,7 +186,13 @@ class Menu:
 
 
     def borrar_cliente(self):
-        id_cliente = int(input("ingrese el ID del cliente a borrar: "))
+        while True:
+            try:
+                id_cliente = int(input("ingrese el ID del cliente a borrar: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         c = self.lista_c.buscar_por_id(id_cliente)
         if c == None:
             print("ID de cliente no encontrado")
@@ -198,7 +226,13 @@ class Menu:
 
     def modificar_datos_clientes(self):
         lista = self.lista_c.lista_Clientes
-        id_cliente = int(input("Ingrese el ID del cliente: "))
+        while True:
+            try:
+                id_cliente = int(input("Ingrese el ID del cliente: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         c = self.lista_c.buscar_por_id(id_cliente)
         if c == None:
             print("\nCliente no encontrado")
@@ -280,7 +314,13 @@ class Menu:
 
     def modificar_datos_particulares(self):
         lista = self.lista_c.lista_Clientes
-        id_cliente = int(input("ingrese el ID del cliente a modificar: "))
+        while True:
+            try:
+                id_cliente = int(input("ingrese el ID del cliente a modificar: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         c = self.lista_c.buscar_por_id(id_cliente)
         if c == None:
             print("ID cliente no encontrado")
@@ -325,7 +365,13 @@ class Menu:
             for cliente in lista:
                 print(cliente)
                 print("========================================")
-            idc = int(input("Ingrese el id del cliente: "))
+            while True:
+                try:
+                    idc = int(input("Ingrese el id del cliente: "))
+                except ValueError:
+                    print('Ingresó un dato inválido')
+                    continue
+                break
             cne = 0
             for I in lista:
                 if I.id_cliente == idc:
@@ -339,9 +385,27 @@ class Menu:
                 fecha_ingreso = datetime.today()
                 fecha_ingreso = date(fecha_ingreso.year, fecha_ingreso.month, fecha_ingreso.day)
                 print("Ingrese la fecha de entrega propuesta: ")
-                dia = int(input("Día (1-31): "))
-                mes = int(input("Mes (1-12): "))
-                anio = int(input("Año: "))
+                while True:
+                    try:
+                        dia = int(input("Día (1-31): "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
+                while True:
+                    try:
+                        mes = int(input("Mes (1-12): "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
+                while True:
+                    try:
+                        anio = int(input("Año: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
                 fecha_entrega_propuesta = date(anio, mes, dia)
                 descripcion = input("Ingrese una descripción del trabajo: ")
                 t = self.lista_t.nuevo_trabajo(cliente, fecha_ingreso, fecha_entrega_propuesta, descripcion)
@@ -357,7 +421,13 @@ class Menu:
 
 
     def establecer_entrega(self):
-        id_trabajo = int(input("Ingrese el ID del trabajo que quiere establecer como 'entregado': "))
+        while True:
+            try:
+                id_trabajo = int(input("Ingrese el ID del trabajo que quiere establecer como 'entregado': "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         t = self.lista_t.buscar_por_id(id_trabajo)
         if t == None:
             print("ID de trabajo no encontrado")
@@ -375,11 +445,18 @@ class Menu:
             else:
                 print("Operación cancelada por el usuario")
         input("\nPresione cualquier tecla para volver al menú")
+        self.lista_t = TrabajosLista()
 
 
 
     def establecer_final(self):
-        id_trabajo = int(input("Ingrese el ID del trabajo que quiere establecer como 'finalizado': "))
+        while True:
+            try:
+                id_trabajo = int(input("Ingrese el ID del trabajo que quiere establecer como 'finalizado': "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         t = self.lista_t.buscar_por_id(id_trabajo)
         if t == None:
             print("ID de trabajo no encontrado")
@@ -397,7 +474,13 @@ class Menu:
         input("\nPresione cualquier tecla para volver al menú")
 
     def buscar_trabajo(self):
-        id_trabajo = int(input("Ingrese el ID del trabajo: "))
+        while True:
+            try:
+                id_trabajo = int(input("Ingrese el ID del trabajo: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         trabajo = self.lista_t.buscar_por_id(id_trabajo)
         if trabajo == None:
             print("ID no encontrado")
@@ -406,7 +489,13 @@ class Menu:
         input("\nPresione cualquier tecla para volver al menú")
 
     def modificar_datos_trabajos(self):
-        id_trabajo = int(input("ingrese el ID del trabajo a modificar: "))
+        while True:
+            try:
+                id_trabajo = int(input("ingrese el ID del trabajo a modificar: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         trabajo = self.lista_t.buscar_por_id(id_trabajo)
         if trabajo == None:
             print("ID no encontrado")
@@ -418,27 +507,81 @@ class Menu:
             conf = input("Desea modificar la fecha de ingreso? S/N: ")
             if conf == 'S' or conf == 's':
                print("Ingrese la nueva fecha de ingreso a establecer: ")
-               dia = int(input("Día: "))
-               mes = int(input("Mes: "))
-               anio = int(input("Año: "))
+               while True:
+                   try:
+                       dia = int(input("Día: "))
+                   except ValueError:
+                       print('Ingresó un dato inválido')
+                       continue
+                   break
+               while True:
+                   try:
+                       mes = int(input("Mes: "))
+                   except ValueError:
+                       print('Ingresó un dato inválido')
+                       continue
+                   break
+               while True:
+                   try:
+                       anio = int(input("Año: "))
+                   except ValueError:
+                       print('Ingresó un dato inválido')
+                       continue
+                   break
                fecha_ingreso = date(anio, mes, dia)
             else:
                fecha_ingreso = trabajo.fecha_ingreso
             conf = input("Desea modificar la fecha de entrega propuesta? S/N: ")
             if conf == 'S' or conf == 's':
                 print("Ingrese la nueva fecha de entrega propuesta: ")
-                dia = int(input("Día: "))
-                mes = int(input("Mes: "))
-                anio = int(input("Año: "))
+                while True:
+                    try:
+                        dia = int(input("Día: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
+                while True:
+                    try:
+                        mes = int(input("Mes: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
+                while True:
+                    try:
+                        anio = int(input("Año: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
                 fecha_entrega_propuesta = date(anio, mes, dia)
             else:
                 fecha_entrega_propuesta = trabajo.fecha_entrega_propuesta
             conf = input("Desea modificar la fecha de entrega real? S/N: ")
             if conf == 'S' or conf == 's':
                 print("Ingrese la nueva fecha de entrega real: ")
-                dia = int(input("Día: "))
-                mes = int(input("Mes: "))
-                anio = int(input("Año: "))
+                while True:
+                    try:
+                        dia = int(input("Día: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
+                while True:
+                    try:
+                        mes = int(input("Mes: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
+                while True:
+                    try:
+                        anio = int(input("Año: "))
+                    except ValueError:
+                        print('Ingresó un dato inválido')
+                        continue
+                    break
                 fecha_entrega_real = date(anio, mes, dia)
             else:
                 fecha_entrega_real = trabajo.fecha_entrega_real
@@ -466,7 +609,13 @@ class Menu:
         input("\nPresione cualquier tecla para volver al menú")
 
     def eliminar_trabajo(self):
-        id_trabajo = int(input("Ingrese el ID del trabajo que desea eliminar: "))
+        while True:
+            try:
+                id_trabajo = int(input("Ingrese el ID del trabajo que desea eliminar: "))
+            except ValueError:
+                print('Ingresó un dato inválido')
+                continue
+            break
         trabajo = self.lista_t.buscar_por_id(id_trabajo)
         if trabajo == None:
             print("ID del trabajo no encontrado")
